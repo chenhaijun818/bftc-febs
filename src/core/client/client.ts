@@ -12,12 +12,17 @@ export class Client {
     }
 
     post(endpoint: string, params: any) {
-        params = JSON.stringify(params)
         return this.request(endpoint, params, 'POST')
     }
 
     request(endpoint: string, params: any, method: string) {
-        return fetch(`${host}/${endpoint}`, {method, body: params})
+        let headers = new Headers();
+        let token = localStorage.getItem('token');
+        if (token) {
+            headers.append('Authorization', `bearer ${token}`)
+        }
+        let body = new URLSearchParams(params);
+        return fetch(`${host}/${endpoint}`, {method, headers, body: body.toString()})
     }
 
 }

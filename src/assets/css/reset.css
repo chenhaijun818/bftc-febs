@@ -4,3 +4,13 @@ html, body, div, p, span, input, ul, li {
     padding: 0;
     box-sizing: border-box;
 }
+
+html {
+    color: #333;
+}
+
+a {
+    color: #333;
+    text-decoration: none;
+}
+

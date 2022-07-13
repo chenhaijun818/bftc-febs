@@ -1,8 +1,14 @@
 <template>
   <side-bar></side-bar>
   <nav-bar></nav-bar>
-  <router-view></router-view>
-  <footer class="footer">footer</footer>
+  <div class="container">
+    <router-view></router-view>
+  </div>
+  <footer class="footer">
+    <span>© 2022</span>
+    <a target="_blank" href="https://mrbird.cc">MrChan</a>
+    <span>- FEBS</span>
+  </footer>
 </template>
 
 <script lang="ts">
@@ -25,8 +31,22 @@ export default class Layout extends Vue {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.container {
+  background-color: #f3f5f8;
+  padding: 10px;
+
+  > div:first-child {
+    background-color: #fff;
+    height: 100%;
+  }
+}
+
 footer {
-  background-color: chocolate;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px 0 rgb(0 0 0 / 10%);
 }
 </style>
