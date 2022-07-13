@@ -1,5 +1,5 @@
 <template>
-  <div class="container">side bar</div>
+  <div class="side-bar">side bar</div>
 </template>
 
 <script>
@@ -9,10 +9,12 @@ import {Options, Vue} from "vue-class-component";
   components: {}
 })
 export default class SideBar extends Vue {
-  name: "side-bar"
+  name= "side-bar"
 }
 </script>
 
 <style scoped>
-
+  .side-bar {
+    background-color: antiquewhite;
+  }
 </style>
