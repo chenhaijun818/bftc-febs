@@ -1,11 +1,11 @@
 <template>
-  <side-bar></side-bar>
+  <side-bar :routes="routes"></side-bar>
   <nav-bar></nav-bar>
   <div class="container">
     <router-view></router-view>
   </div>
   <footer class="footer">
-    <span>© 2022</span>
+    <span>© 2022 </span>
     <a target="_blank" href="https://mrbird.cc">MrChan</a>
     <span>- FEBS</span>
   </footer>
@@ -15,6 +15,9 @@
 import {Options, Vue} from "vue-class-component";
 import SideBar from './side-bar.vue'
 import NavBar from './nav-bar.vue'
+import {Client} from "@/core/client/client";
+
+let client = new Client()
 
 @Options({
   components: {
@@ -24,9 +27,14 @@ import NavBar from './nav-bar.vue'
 })
 export default class Layout extends Vue {
   name = 'layout'
+  routes: any[] = []
 
   created() {
-    console.log('layout created')
+    let routes = localStorage.getItem('routes');
+    if (routes) {
+      this.routes = JSON.parse(routes)
+      // console.log(this.routes)
+    }
   }
 }
 </script>
