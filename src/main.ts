@@ -5,6 +5,7 @@ import router from './core/router'
 import store from './core/store'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import {Client} from './core/client/client';
 
 let client = new Client();
@@ -16,4 +17,6 @@ client.addAfterInterceptor((res: any) => {
 const app = createApp(App);
 app.use(store).use(router).use(ElementPlus).mount('#app')
 
-
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component)
+}

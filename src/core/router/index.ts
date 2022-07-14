@@ -4,10 +4,11 @@ import login from '../../views/login.vue'
 import Foo from "@/packages/foo/foo.vue";
 import Dashboard from "@/views/dashboard.vue";
 
+
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
-        name: 'layout',
+        name: 'main',
         component: layout,
         children: [
             {
