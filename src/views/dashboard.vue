@@ -15,11 +15,11 @@ export default class Dashboard extends Vue {
   name = 'dashboard'
 
   addRoute() {
-    this.$router.addRoute('main', {
-      name: 'news',
-      path: '/news/news-list',
-      component: () => import('@/views/febs/news/news-list/Index.vue')
-    })
+    // this.$router.addRoute('main', {
+    //   name: 'news',
+    //   path: '/news/news-list',
+    //   component: () => import('@/views/febs/news/news-list/Index.vue')
+    // })
   }
 }
 </script>

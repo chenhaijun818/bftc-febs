@@ -19,7 +19,7 @@ export class Client {
     }
 
     request(endpoint: string, params: any, method: string, options: any) {
-        let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+        let headers = new Headers({'Content-Type': 'application/json'});
         let token = localStorage.getItem('access_token');
         if (token) {
             headers.append('Authorization', `bearer ${token}`)
@@ -27,7 +27,8 @@ export class Client {
         let url = new URL(`${host}/${endpoint}`);
         let searchParams = new URLSearchParams(params);
         if (method === 'GET') {
-            url.search = searchParams.toString();
+            // @ts-ignore
+            url.search = searchParams;
             return fetch(url.toString(), {
                 headers
             }).then(res => {
@@ -36,12 +37,16 @@ export class Client {
                 });
             });
         }
-        return fetch(url.toString(), {
+
+        // @ts-ignore
+        return fetch(url, {
             method,
             headers,
-            body: searchParams.toString()
+            body: searchParams
         }).then(res => {
-            return res.json();
+            return res.json().then((res: Response) => {
+                return this.useAfterInterceptors(res)
+            });
         });
     }
 

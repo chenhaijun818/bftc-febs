@@ -6,7 +6,7 @@
           <span v-if="route.meta" :class="route.meta.icon"></span>
           <span>{{ route.name }}</span>
         </template>
-        <el-menu-item v-for="(subRoute, i) in route.children" :index="subRoute.path" @click="onClick(subRoute)">
+        <el-menu-item v-for="subRoute in route.children" :index="subRoute.path">
           <template #title>
             <span>{{ subRoute.name }}</span>
           </template>
@@ -29,11 +29,6 @@ import {Options, Vue} from "vue-class-component";
 })
 export default class SideBar extends Vue {
   name = "side-bar"
-
-  onClick(route) {
-    console.log(route)
-    console.log(this.$router.getRoutes())
-  }
 }
 </script>
 

@@ -3,7 +3,6 @@
 </template>
 
 <script lang="ts">
-import {ref} from 'vue'
 import {Options, Vue} from "vue-class-component";
 import {Menu, Document, Setting, Location} from '@element-plus/icons-vue'
 
@@ -16,49 +15,18 @@ import {Menu, Document, Setting, Location} from '@element-plus/icons-vue'
   }
 })
 export default class App extends Vue {
-  isCollapse = ref(true)
 
   created() {
-    // this.addRoutes()
-    this.$router.addRoute('main', {
-      name: 'menu',
-      path: '/system/menu',
-      component: import('@/packages/system/menu/menu.vue')
-    })
+
   }
 
-  addRoutes() {
-    let routes: any = localStorage.getItem('routes');
-    if (routes) {
-      routes = JSON.parse(routes);
-      for (let route of routes) {
-        if (route.children && route.children.length) {
-          for (let subRoute of route.children) {
-            let newRoute = {
-              name: subRoute.name,
-              path: subRoute.path,
-              component: import(`@/packages/${subRoute.component}.vue`)
-            }
-            this.$router.addRoute('main', newRoute)
-          }
-        }
-      }
-    }
-  }
-
-  checkLogin() {
-    let token = localStorage.getItem('token');
-    if (!token) {
-      this.$router.push('/login')
-    }
-  }
 }
 
 </script>
 
 <style lang="scss">
-@import "@/assets/css/reset.css";
-@import "@/assets/css/global.css";
+@import "@/core/assets/css/reset.css";
+@import "@/core/assets/css/global.css";
 
 #app {
   display: grid;

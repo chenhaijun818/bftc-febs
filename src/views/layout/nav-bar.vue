@@ -1,5 +1,7 @@
 <template>
-  <div class="nav-bar">nav bar</div>
+  <div class="nav-bar">
+    <el-button @click="logout">log out</el-button>
+  </div>
 </template>
 
 <script lang="ts">
@@ -7,6 +9,10 @@ import {Vue} from "vue-class-component";
 
 export default class NavBar extends Vue {
   name = 'nav-bar'
+
+  logout() {
+    console.log('logout')
+  }
 }
 </script>
 

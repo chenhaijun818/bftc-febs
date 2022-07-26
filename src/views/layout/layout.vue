@@ -2,7 +2,7 @@
   <side-bar :routes="routes"></side-bar>
   <nav-bar></nav-bar>
   <div class="container">
-    <router-view></router-view>
+    <router-view :key="key"></router-view>
   </div>
   <footer class="footer">
     <span>© 2022 </span>
@@ -15,10 +15,8 @@
 import {Options, Vue} from "vue-class-component";
 import SideBar from './side-bar.vue'
 import NavBar from './nav-bar.vue'
-import {Client} from "@/core/client/client";
 
-let client = new Client()
-
+Vue.registerHooks(['beforeRouteUpdate'])
 @Options({
   components: {
     'side-bar': SideBar,
@@ -28,12 +26,17 @@ let client = new Client()
 export default class Layout extends Vue {
   name = 'layout'
   routes: any[] = []
+  key = ''
+
+  beforeRouteUpdate(to: any, from: any, next: any) {
+    this.key = to.name
+    next()
+  }
 
   created() {
     let routes = localStorage.getItem('routes');
     if (routes) {
       this.routes = JSON.parse(routes)
-      // console.log(this.routes)
     }
   }
 }
