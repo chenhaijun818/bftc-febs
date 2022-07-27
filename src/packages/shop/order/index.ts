@@ -4,6 +4,8 @@ export const page = new Page({
     name: 'shop-order',
     apiMethod: 'POST',
     listApi: 'order/systemOrderManage/findSysOrderList',
+    params: {
+    },
     columns: [
         {label: '店铺名称', prop: 'shopName'},
         {label: '用户电话', prop: 'shopTell'},

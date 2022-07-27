@@ -18,6 +18,10 @@ export class Client {
         return this.request(endpoint, params, 'POST', options)
     }
 
+    delete(endpoint: string, params = {}, options = {}) {
+        return this.request(endpoint, params, 'DELETE', options)
+    }
+
     request(endpoint: string, params: any, method: string, options: any) {
         let headers = new Headers({'Content-Type': 'application/json'});
         let token = localStorage.getItem('access_token');
@@ -27,8 +31,7 @@ export class Client {
         let url = new URL(`${host}/${endpoint}`);
         let searchParams = new URLSearchParams(params);
         if (method === 'GET') {
-            // @ts-ignore
-            url.search = searchParams;
+            url.search = searchParams.toString();
             return fetch(url.toString(), {
                 headers
             }).then(res => {
@@ -37,17 +40,18 @@ export class Client {
                 });
             });
         }
-
-        // @ts-ignore
-        return fetch(url, {
+        return fetch(url.toString(), {
             method,
             headers,
-            body: searchParams
-        }).then(res => {
-            return res.json().then((res: Response) => {
-                return this.useAfterInterceptors(res)
+            body: JSON.stringify(params)
+        }).then(res1 => {
+            console.log('fetch success')
+            return res1.json().then((res2: Response) => {
+                return this.useAfterInterceptors(res2)
             });
-        });
+        }).catch(err => {
+            console.log('fetch fail')
+        })
     }
 
     addBeforeInterceptor(interceptor: any) {

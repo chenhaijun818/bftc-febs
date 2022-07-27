@@ -1,7 +1,7 @@
 <template>
   <side-bar :routes="routes"></side-bar>
   <nav-bar></nav-bar>
-  <div class="container">
+  <div class="app-container">
     <router-view :key="key"></router-view>
   </div>
   <footer class="footer">
@@ -43,7 +43,7 @@ export default class Layout extends Vue {
 </script>
 
 <style scoped lang="scss">
-.container {
+.app-container {
   background-color: #f3f5f8;
   padding: 10px;
 

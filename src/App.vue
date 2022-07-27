@@ -16,10 +16,6 @@ import {Menu, Document, Setting, Location} from '@element-plus/icons-vue'
 })
 export default class App extends Vue {
 
-  created() {
-
-  }
-
 }
 
 </script>
@@ -37,11 +33,12 @@ export default class App extends Vue {
   grid-template-areas: "sidebar header"
                      "sidebar main"
                      "sidebar footer";
-}
 
-#app :first-child {
-  grid-row-start: 1;
-  grid-row-end: 4;
+  > :first-child {
+    grid-row-start: 1;
+    grid-row-end: 4;
+  }
+
 }
 
 </style>

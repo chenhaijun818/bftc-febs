@@ -8,6 +8,7 @@ import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import {Client} from './core/client/client';
 import List from "@/views/list.vue";
+import {RouteRecordRaw} from "vue-router";
 
 let client = new Client();
 
@@ -37,12 +38,18 @@ function addRoutes() {
         for (let route of routes) {
             if (route.children && route.children.length) {
                 for (let subRoute of route.children) {
-                    let newRoute = {
+                    let newRoute: RouteRecordRaw = {
                         name: subRoute.name,
                         path: subRoute.path,
+                        children: [],
                         component: List
                     }
                     router.addRoute('main', newRoute)
+                    import(`@/packages${subRoute.path}/index.vue`).then(res => {
+                        router.removeRoute(subRoute.name)
+                        newRoute.component = res.default
+                        router.addRoute('main', newRoute)
+                    }).catch(_ => {})
                 }
             }
         }

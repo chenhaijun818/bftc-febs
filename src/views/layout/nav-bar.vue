@@ -6,12 +6,16 @@
 
 <script lang="ts">
 import {Vue} from "vue-class-component";
+import {AppService} from "@/services/app.service";
+
+const app = new AppService()
 
 export default class NavBar extends Vue {
   name = 'nav-bar'
 
   logout() {
     console.log('logout')
+    app.logout()
   }
 }
 </script>
