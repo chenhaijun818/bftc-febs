@@ -13,8 +13,8 @@
 
 <script lang="ts">
 import {Options, Vue} from "vue-class-component";
-import SideBar from './side-bar.vue'
-import NavBar from './nav-bar.vue'
+import SideBar from './components/side-bar.vue'
+import NavBar from './components/nav-bar.vue'
 
 Vue.registerHooks(['beforeRouteUpdate'])
 @Options({

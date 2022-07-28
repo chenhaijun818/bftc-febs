@@ -21,8 +21,8 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
-@import "@/core/assets/css/reset.css";
-@import "@/core/assets/css/global.css";
+@import "@/assets/css/reset.css";
+@import "@/assets/css/global.css";
 
 #app {
   display: grid;

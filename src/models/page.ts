@@ -3,7 +3,9 @@ export class Page {
     listApi = ''
     apiMethod = ''
     columns = []
-    params = null
+    params = []
+    filters = []
+    handlers = []
 
     constructor(options: any) {
         this.name = options.name
@@ -11,5 +13,7 @@ export class Page {
         this.apiMethod = options.apiMethod
         this.columns = options.columns
         this.params = options.params
+        this.filters = options.filters
+        this.handlers = options.handlers
     }
 }

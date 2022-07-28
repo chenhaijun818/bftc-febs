@@ -1,4 +1,4 @@
-import {Page} from "@/core/models/page";
+import {Page} from "@/models/page";
 
 export const page = new Page({
     name: 'shop-order',

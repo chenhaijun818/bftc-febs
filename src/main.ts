@@ -7,7 +7,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import {Client} from './core/client/client';
-import List from "@/views/list.vue";
+import list from "@/pages/list.vue";
 import {RouteRecordRaw} from "vue-router";
 
 let client = new Client();
@@ -42,7 +42,7 @@ function addRoutes() {
                         name: subRoute.name,
                         path: subRoute.path,
                         children: [],
-                        component: List
+                        component: list
                     }
                     router.addRoute('main', newRoute)
                     import(`@/packages${subRoute.path}/index.vue`).then(res => {

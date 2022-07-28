@@ -1,9 +1,7 @@
 import {createRouter, createWebHistory, RouteRecordRaw} from 'vue-router'
-import layout from '../../views/layout/layout.vue'
-import login from '../../views/login.vue'
-import Foo from "@/packages/foo/foo.vue";
-import Dashboard from "@/views/dashboard.vue";
-
+import layout from '@/pages/layout/layout.vue'
+import login from '@/pages/login.vue'
+import dashboard from "@/pages/dashboard.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -14,11 +12,7 @@ const routes: Array<RouteRecordRaw> = [
             {
                 path: '/',
                 name: 'dashboard',
-                component: Dashboard
-            }, {
-                path: '/foo',
-                name: 'foo',
-                component: Foo
+                component: dashboard
             }
         ]
     }, {

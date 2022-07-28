@@ -10,6 +10,7 @@
           :key="column.name"
           :label="column.label"
           :prop="column.prop"
+          :formatter="column.filter"
           align="center"
       />
     </el-table>
@@ -33,13 +34,16 @@ export default class List extends Vue {
   listApi = ''
   apiMethod = ''
   columns = []
+  params = []
 
   beforeRouteEnter(to: any, from: any, next: any) {
     import(`@/packages${to.path}`).then(m => {
+      // 因为在route enter时组件还没有实例化，拿不到this，所以在next的回调中进行赋值
       next((vm: any) => {
         vm.listApi = m.page.listApi
         vm.apiMethod = m.page.apiMethod
         vm.columns = m.page.columns
+        vm.params = m.page.params
         vm.getList()
       })
     }).catch(_ => {
@@ -57,12 +61,17 @@ export default class List extends Vue {
   }
 
   getList() {
-    client.request(this.listApi, {
+    const params = {
       pageSize: this.pageSize,
-      pageNum: this.pageIndex
-    }, this.apiMethod, {}).then(res => {
+      pageNum: this.pageIndex,
+      queryRequest: {
+        pageSize: this.pageSize,
+        pageNum: this.pageIndex,
+      }
+    }
+    client.request(this.listApi, params, this.apiMethod, {}).then(res => {
       if (res) {
-        this.list = res.records
+        this.list = res.records || res.rows
         this.total = res.total
       }
     })
