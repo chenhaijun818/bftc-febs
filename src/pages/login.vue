@@ -45,16 +45,22 @@ export default class Login extends Vue {
     if (!this.code) {
       return
     }
-    let res1: any = await this.getToken()
-    if (res1) {
-      localStorage.setItem('access_token', res1.access_token)
-      localStorage.setItem('refresh_token', res1.refresh_token)
+    let res: any = await this.getToken()
+    if (res) {
+      localStorage.setItem('access_token', res.access_token)
+      localStorage.setItem('refresh_token', res.refresh_token)
     }
 
-    let res2 = await client.get(`system/menu/${this.username}`);
+    let p1 = client.get(`system/menu/${this.username}`);
+    let p2 = client.get('auth/user');
+    let [res1, res2] = await Promise.all([p1, p2])
+    if (res1) {
+      localStorage.setItem('permissions', JSON.stringify(res1.permissions))
+      localStorage.setItem('routes', JSON.stringify(res1.routes))
+    }
     if (res2) {
-      localStorage.setItem('permissions', JSON.stringify(res2.permissions))
-      localStorage.setItem('routes', JSON.stringify(res2.routes))
+      localStorage.setItem('user', JSON.stringify(res2.principal))
+      localStorage.setItem('authorities', JSON.stringify(res2.authorities))
     }
     this.$router.back()
   }

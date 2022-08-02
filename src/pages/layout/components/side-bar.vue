@@ -5,19 +5,23 @@
            alt="帮服同城">
       <span>帮服同城管理系统</span>
     </router-link>
-    <el-menu :unique-opened="true" background-color="#272c33" text-color="#fff" router>
-      <el-sub-menu v-for="(route, index) in routes" :index="String(index)">
-        <template #title>
-          <span v-if="route.meta" :class="route.meta.icon"></span>
-          <span>{{ route.name }}</span>
-        </template>
-        <el-menu-item v-for="subRoute in route.children" :index="subRoute.path">
-          <template #title>
-            <span>{{ subRoute.name }}</span>
-          </template>
-        </el-menu-item>
-      </el-sub-menu>
-    </el-menu>
+    <div class="scroll">
+      <el-scrollbar class="scrollbar">
+        <el-menu class="menu" :unique-opened="true" background-color="#272c33" text-color="#fff" router>
+          <el-sub-menu v-for="(route, index) in routes" :index="String(index)">
+            <template #title>
+
+              <span>{{ route.name }}</span>
+            </template>
+            <el-menu-item v-for="subRoute in route.children" :index="subRoute.path">
+              <template #title>
+                <span>{{ subRoute.name }}</span>
+              </template>
+            </el-menu-item>
+          </el-sub-menu>
+        </el-menu>
+      </el-scrollbar>
+    </div>
   </div>
 </template>
 
@@ -42,6 +46,7 @@ export default class SideBar extends Vue {
   background-color: #272c33;
   color: #fff;
   box-shadow: 2px 0 6px rgb(0 0 0 / 25%);
+  height: 100vh;
 
   .header {
     display: flex;
@@ -49,7 +54,7 @@ export default class SideBar extends Vue {
     justify-content: center;
     font-size: 20px;
     color: #a5dbfc;
-    padding: 20px;
+    height: 55px;
 
     .logo {
       width: 26px;
@@ -58,10 +63,12 @@ export default class SideBar extends Vue {
     }
   }
 
-  .menu {
-    background-color: #272c33;
-    color: #fff;
-    height: 100%;
+  .scroll {
+    height: calc(100% - 55px);
+
+    .menu {
+      border-right: none;
+    }
   }
 }
 </style>

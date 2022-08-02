@@ -1,9 +1,13 @@
 import {Page} from "@/models/page";
 import {UiService} from "@/services/ui.service";
 import {Client} from "@/core/client/client";
+import HoodEditor from './editor.vue'
+
+console.log(HoodEditor)
 
 const ui = new UiService();
 const client = new Client();
+
 export const page = new Page({
     name: 'system-hood',
     apiMethod: 'POST',

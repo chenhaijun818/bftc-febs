@@ -8,13 +8,19 @@ import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import {Client} from './core/client/client';
 import list from "@/pages/list.vue";
-import {RouteRecordRaw} from "vue-router";
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 let client = new Client();
 
+
+// 处理返回结果
 client.addAfterInterceptor((res: any) => {
-    console.log(res)
+    if (res.principal) {
+        // 处理auth/user接口
+        return res
+    }
     if (res.code === 401) {
+        // token过期
         router.push('/login')
         return
     }
@@ -25,7 +31,7 @@ client.addAfterInterceptor((res: any) => {
 addRoutes()
 
 const app = createApp(App);
-app.use(store).use(router).use(ElementPlus).mount('#app')
+app.use(store).use(router).use(ElementPlus, {locale: zhCn}).mount('#app')
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
@@ -36,21 +42,14 @@ function addRoutes() {
     if (routes) {
         routes = JSON.parse(routes);
         for (let route of routes) {
+            route.component = '';
             if (route.children && route.children.length) {
                 for (let subRoute of route.children) {
-                    let newRoute: RouteRecordRaw = {
-                        name: subRoute.name,
-                        path: subRoute.path,
-                        children: [],
-                        component: list
-                    }
-                    router.addRoute('main', newRoute)
-                    import(`@/packages${subRoute.path}/index.vue`).then(res => {
-                        router.removeRoute(subRoute.name)
-                        newRoute.component = res.default
-                        router.addRoute('main', newRoute)
-                    }).catch(_ => {})
+                    subRoute.component = () => import(`@/packages${subRoute.path}/index.vue`).then(res => res.default).catch(() => list)
                 }
+            }
+            if (route.meta) {
+                router.addRoute('main', route)
             }
         }
     }

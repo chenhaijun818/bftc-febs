@@ -1,9 +1,11 @@
 <template>
-  <div></div>
+  <div>{{name}}</div>
 </template>
 
 <script lang="ts">
-export default class HoodEditor {
+import {Vue} from "vue-class-component";
+
+export default class HoodEditor extends Vue{
   name = 'hood-editor'
 }
 </script>

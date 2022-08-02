@@ -30,16 +30,20 @@
           align="center"
       >
         <template v-slot="{row}">
-          <el-icon class="handler" v-for="h in handlers" :size="20" :color="h.color" @click="h.click(row)">
+          <el-icon class="handler" v-for="h in handlers" :size="20" :color="h.color" @click="handlerClick(h)">
             <component :is="h.icon"></component>
           </el-icon>
         </template>
       </el-table-column>
     </el-table>
-    <div class="pagination">
-      <div>共{{ total }}条</div>
-      <el-pagination background layout="prev, pager, next" :total="total" @current-change="onPageChange"/>
-    </div>
+    <el-pagination
+        class="pagination"
+        :total="total"
+        background
+        layout="total, sizes, prev, pager, next, jumper"
+        @current-change="onPageChange"
+        @size-change="onSizeChange"
+    />
   </div>
 </template>
 
@@ -56,6 +60,7 @@ export default class List extends Vue {
   total = 0
   pageIndex = 1
   pageSize = 10
+  pageSizes = [10, 20, 30, 50]
   listApi = ''
   apiMethod = ''
   columns = []
@@ -66,7 +71,6 @@ export default class List extends Vue {
   handlers = []
 
   beforeRouteEnter(to: any, from: any, next: any) {
-    console.log('before route enter')
     import(`@/packages${to.path}`).then(m => {
       // 因为在route enter时组件还没有实例化，拿不到this，所以在next的回调中进行赋值
       next((vm: any) => {
@@ -93,13 +97,14 @@ export default class List extends Vue {
     this.getList()
   }
 
-  search() {
-    this.pageIndex = 1
+  onSizeChange(size: number) {
+    this.pageSize = size
     this.getList()
   }
 
-  add() {
-
+  search() {
+    this.pageIndex = 1
+    this.getList()
   }
 
   getList() {
@@ -120,9 +125,14 @@ export default class List extends Vue {
     })
   }
 
+  handlerClick(handler: any) {
+    console.log(handler)
+  }
+
   reset() {
     this.params = {}
     this.pageIndex = 1
+    this.pageSize = 10
     this.total = 0
     this.getList()
   }
@@ -168,7 +178,5 @@ export default class List extends Vue {
 }
 
 .pagination {
-  display: flex;
-  align-items: center;
 }
 </style>
