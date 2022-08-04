@@ -11,6 +11,7 @@
         <el-button plain size="large" v-if="b === 'add'">新增</el-button>
       </template>
     </div>
+    <el-skeleton v-if="!list" :rows="pageSize" animated />
     <el-table
         class="list"
         :data="list"
