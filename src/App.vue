@@ -29,7 +29,7 @@ export default class App extends Vue {
   width: 100vw;
   height: 100vh;
   grid-template-columns: 255px auto;
-  grid-template-rows: 85px auto 40px;
+  grid-template-rows: 60px auto 40px;
   grid-template-areas: "sidebar header"
                      "sidebar main"
                      "sidebar footer";

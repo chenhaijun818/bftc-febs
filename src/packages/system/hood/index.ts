@@ -3,8 +3,6 @@ import {UiService} from "@/services/ui.service";
 import {Client} from "@/core/client/client";
 import HoodEditor from './editor.vue'
 
-console.log(HoodEditor)
-
 const ui = new UiService();
 const client = new Client();
 
@@ -13,10 +11,17 @@ export const page = new Page({
     apiMethod: 'POST',
     listApi: 'system/tHousingEstate/queryEstateList',
     params: [],
-    buttons: ['search', 'reset', 'add'],
+    buttons: [
+        {
+            name: 'add', text: '新增', component: HoodEditor, click() {
+                console.log('add')
+            }
+        }
+    ],
     filters: [
         {type: 'text', prop: 'cir', placeholder: '请输入小区名'}
     ],
+    // 对列表的操作
     handlers: [
         {
             icon: 'edit',
@@ -28,10 +33,12 @@ export const page = new Page({
             icon: 'delete',
             color: 'rgb(255 85 0)',
             click(row: any) {
-                ui.confirm('您确定要删除该小区吗？').then(confirm => {
+                return ui.confirm('您确定要删除该小区吗？').then(confirm => {
                     if (confirm) {
-                        client.post('system/tHousingEstate/estateDel', {estateIds: [row.id]}).then(res => {
-                            console.log(res)
+                        return client.post('system/tHousingEstate/estateDel', {estateIds: [row.id]}).then(res => {
+                            if (res) {
+                                ui.success('删除成功')
+                            }
                         })
                     }
                 })

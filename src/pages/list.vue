@@ -5,13 +5,13 @@
         <el-input size="large" class="filter-input" v-if="f.type === 'text'" :placeholder="f.placeholder"
                   v-model="params[f.prop]"></el-input>
       </template>
+      <el-button v-if="filters" plain size="large" type="primary" @click="search">搜索</el-button>
+      <el-button v-if="filters" plain size="large" type="success" @click="reset">重置</el-button>
       <template v-for="b in buttons">
-        <el-button plain size="large" type="primary" v-if="b === 'search'" @click="search">搜索</el-button>
-        <el-button plain size="large" type="success" v-if="b === 'reset'" @click="reset">重置</el-button>
-        <el-button plain size="large" v-if="b === 'add'">新增</el-button>
+        <el-button plain size="large" @click="buttonClick(b)">{{ b.text }}</el-button>
       </template>
     </div>
-    <el-skeleton v-if="!list" :rows="pageSize" animated />
+    <el-skeleton v-if="!list" :rows="pageSize" animated/>
     <el-table
         class="list"
         :data="list"
@@ -45,6 +45,7 @@
         @current-change="onPageChange"
         @size-change="onSizeChange"
     />
+    <component v-if="modal" :is="modal" @success="onSuccess" @cancel="onCancel"></component>
   </div>
 </template>
 
@@ -70,6 +71,7 @@ export default class List extends Vue {
   paramList = []
   filters = []
   handlers = []
+  modal = null
 
   beforeRouteEnter(to: any, from: any, next: any) {
     import(`@/packages${to.path}`).then(m => {
@@ -126,8 +128,23 @@ export default class List extends Vue {
     })
   }
 
+  onSuccess() {
+    this.reset();
+    this.modal = null
+  }
+
+  onCancel() {
+    this.modal = null
+  }
+
+  buttonClick(button: any) {
+    this.modal = button.component
+  }
+
   handlerClick(handler: any) {
-    console.log(handler)
+    handler.click().then((res: any) => {
+      console.log(res)
+    })
   }
 
   reset() {

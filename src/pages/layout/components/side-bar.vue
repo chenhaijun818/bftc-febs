@@ -7,10 +7,10 @@
     </router-link>
     <div class="scroll">
       <el-scrollbar class="scrollbar">
-        <el-menu class="menu" :unique-opened="true" background-color="#272c33" text-color="#fff" router>
+        <el-menu class="menu" :unique-opened="true" background-color="#272c33" text-color="#fff" router
+                 :default-active="activeRoute">
           <el-sub-menu v-for="(route, index) in routes" :index="String(index)">
             <template #title>
-
               <span>{{ route.name }}</span>
             </template>
             <el-menu-item v-for="subRoute in route.children" :index="subRoute.path">
@@ -38,6 +38,11 @@ import {Options, Vue} from "vue-class-component";
 })
 export default class SideBar extends Vue {
   name = "side-bar"
+  activeRoute = ''
+
+  mounted() {
+    this.activeRoute = this.$route.path
+  }
 }
 </script>
 
