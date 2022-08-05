@@ -141,7 +141,7 @@ export default class List extends Vue {
     this.modal = button.component
   }
 
-  handlerClick(handler: any) {
+  handlerClick(handler: Handler) {
     handler.click().then((res: any) => {
       console.log(res)
     })
