@@ -9,4 +9,5 @@ interface Handler {
     text: string    // 显示按钮的文字
     component: any  // 点击后弹出的窗口组件
     confirmText: string // 确认弹窗的文字
+    click(): Promise<any>       // 按钮的点击事件
 }
