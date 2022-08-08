@@ -1,5 +1,6 @@
 <template>
   <el-drawer
+      class="drawer"
       v-model="drawer"
       :before-close="onClose"
       title="新增"
@@ -9,7 +10,6 @@
     <el-form
         ref="hood-form"
         :model="hood"
-        :rules="rules"
         label-position="right"
         label-width="100px"
     >
@@ -20,24 +20,24 @@
         <el-input v-model="hood.address" placeholder="请输入地址"/>
       </el-form-item>
       <el-form-item label="省市区" prop="location">
-        <el-cascader v-model="hood.location" :options="pca"></el-cascader>
+        <el-cascader v-model="hood.location" :options="pca" @change="onCityChange"></el-cascader>
       </el-form-item>
     </el-form>
-    <!--    <div id="qqmap"></div>-->
-    <div slot="footer">
+        <div id="qqmap"></div>
+    <template #footer>
       <el-button type="warning" plain @click="onClose">取消</el-button>
       <el-button type="primary" plain @click="submit">确认</el-button>
-    </div>
+    </template>
   </el-drawer>
 </template>
 
 <script lang="ts">
-// @ts-ignore
 import {regionData} from "element-china-area-data"
-
-console.log(regionData)
 import {Vue} from "vue-class-component";
 import {markRaw} from "vue";
+
+// @ts-ignore
+const TMap = window.TMap;
 
 export default class HoodEditor extends Vue {
   name = 'hood-editor'
@@ -49,26 +49,6 @@ export default class HoodEditor extends Vue {
     address: ''
   }
   drawer = markRaw({})
-  rules = {
-    ename: [
-      {
-        required: true,
-        message: '该项必填'
-      }
-    ],
-    address: [
-      {
-        required: true,
-        message: '该项必填'
-      }
-    ],
-    location: [
-      {
-        required: true,
-        message: '该项必填'
-      }
-    ]
-  }
 
   show(row = {}) {
     this.hood = row
@@ -82,9 +62,25 @@ export default class HoodEditor extends Vue {
   onClose() {
     this.$emit('cancel')
   }
+
+  onCityChange() {
+    const address = this.hood.location.join("")
+    console.log(address)
+    // let map = new TMap.Map("qqmap", {
+    //   zoom: 14,
+    //   center: new TMap.LatLng(39.986785, 116.301012)
+    // })
+    //   // map.on("click", this.onMapClick)
+    // const geocoder = new TMap.service.Geocoder()
+    // geocoder.getLocation({ address }).then((result: any) => {
+    //   map.setCenter(result.result.location)
+    // })
+  }
 }
 </script>
 
 <style scoped lang="scss">
+.drawer {
 
+}
 </style>

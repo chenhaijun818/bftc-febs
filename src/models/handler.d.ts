@@ -3,6 +3,7 @@ interface Handler {
     method: string  // 此操作api 的方法
     type: string    // add | delete | update | view
     success: Function   // 操作成功回调
+    permission: string  // 此操作需要的权限
     params: any     // 调用接口参数
     icon: string    // 显示按钮的图标
     text: string    // 显示按钮的文字

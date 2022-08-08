@@ -26,21 +26,18 @@
 </template>
 
 <script>
-import {Options, Vue} from "vue-class-component";
+import {Vue} from "vue-class-component";
 
-@Options({
-  props: {
-    routes: {
-      type: Array,
-      default: []
-    }
-  }
-})
 export default class SideBar extends Vue {
   name = "side-bar"
   activeRoute = ''
+  routes = []
 
   mounted() {
+    let routes = localStorage.getItem('routes');
+    if (routes) {
+      this.routes = JSON.parse(routes)
+    }
     this.activeRoute = this.$route.path
   }
 }

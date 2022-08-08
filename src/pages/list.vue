@@ -52,17 +52,17 @@
 <script lang="ts">
 import {Vue} from 'vue-class-component'
 import {Client} from "@/core/client/client";
+import {AuthService} from "@/services/auth.service";
 
 const client = new Client();
+const authService = new AuthService();
 
-Vue.registerHooks(['beforeRouteEnter', 'beforeRouteLeave'])
 export default class List extends Vue {
   name = 'list'
   list = []
   total = 0
   pageIndex = 1
   pageSize = 10
-  pageSizes = [10, 20, 30, 50]
   listApi = ''
   apiMethod = ''
   columns = []
@@ -73,26 +73,19 @@ export default class List extends Vue {
   handlers = []
   modal = null
 
-  beforeRouteEnter(to: any, from: any, next: any) {
-    import(`@/packages${to.path}`).then(m => {
+  mounted() {
+    import(`@/packages${this.$route.path}`).then(m => {
       // 因为在route enter时组件还没有实例化，拿不到this，所以在next的回调中进行赋值
-      next((vm: any) => {
-        vm.listApi = m.page.listApi
-        vm.apiMethod = m.page.apiMethod
-        vm.columns = m.page.columns
-        vm.paramList = m.page.params
-        vm.filters = m.page.filters
-        vm.buttons = m.page.buttons
-        vm.handlers = m.page.handlers
-        vm.getList()
-      })
-    }).catch(_ => {
-      next()
+        let route = (this.$route.path.split('/')).pop();
+        this.listApi = m.page.listApi
+        this.apiMethod = m.page.apiMethod
+        this.columns = m.page.columns
+        this.paramList = m.page.params
+        this.filters = m.page.filters
+        this.buttons = m.page.buttons.filter((b: Handler) => authService.checkPermission(`${route}:${b.permission}`))
+        this.handlers = m.page.handlers.filter((h: Handler) => authService.checkPermission(`${route}:${h.permission}`))
+        this.getList()
     })
-  }
-
-  beforeRouteLeave() {
-    this.clear()
   }
 
   onPageChange(index: number) {
@@ -155,16 +148,6 @@ export default class List extends Vue {
     this.getList()
   }
 
-  clear() {
-    this.list = []
-    this.total = 0
-    this.listApi = ''
-    this.apiMethod = ''
-    this.columns = []
-    this.params = {}
-    this.pageIndex = 1
-  }
-
 }
 </script>
 
@@ -175,7 +158,7 @@ export default class List extends Vue {
 }
 
 .filter {
-  padding: 10px;
+  padding: 10px 0;
   display: flex;
   align-items: center;
 

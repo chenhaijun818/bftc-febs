@@ -12,10 +12,11 @@ export class UserService {
         let user: any = localStorage.getItem('user')
         if (user) {
             user = JSON.parse(user)
-            this.name = user.username
+            this.setUserInfo(user)
         }
     }
 
+    // 传入用户数据进行初始化
     setUserInfo(data: any) {
         this.name = data.username
     }

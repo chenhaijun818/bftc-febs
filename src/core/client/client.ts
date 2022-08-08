@@ -45,11 +45,10 @@ export class Client {
             headers,
             body: JSON.stringify(params)
         }).then(res1 => {
-            console.log('fetch success')
             return res1.json().then((res2: Response) => {
                 return this.useAfterInterceptors(res2)
             });
-        }).catch(err => {
+        }).catch(_ => {
             console.log('fetch fail')
         })
     }

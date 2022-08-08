@@ -13,7 +13,10 @@ export const page = new Page({
     params: [],
     buttons: [
         {
-            name: 'add', text: '新增', component: HoodEditor, click() {
+            name: 'add',
+            text: '新增',
+            permission: 'add',
+            component: HoodEditor, click() {
                 console.log('add')
             }
         }
@@ -25,12 +28,14 @@ export const page = new Page({
     handlers: [
         {
             icon: 'edit',
+            permission: 'update',
             color: 'rgb(45 183 245)',
             click(row: any) {
                 console.log(row)
             },
         }, {
             icon: 'delete',
+            permission: 'delete',
             color: 'rgb(255 85 0)',
             click(row: any) {
                 return ui.confirm('您确定要删除该小区吗？').then(confirm => {

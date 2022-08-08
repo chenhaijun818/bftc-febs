@@ -26,8 +26,12 @@ import {Vue} from "vue-class-component";
 import {Client} from "@/core/client/client";
 import {randomNum} from "@/core/client/fn";
 import {host} from "@/core/client/config";
+import {AuthService} from "@/services/auth.service";
+import {UserService} from "@/services/user.service";
 
 let client = new Client();
+let authService = new AuthService();
+let userService = new UserService();
 
 export default class Login extends Vue {
   name = 'login'
@@ -53,6 +57,7 @@ export default class Login extends Vue {
 
     let p1 = client.get(`system/menu/${this.username}`);
     let p2 = client.get('auth/user');
+    client.get('system/user/success');
     let [res1, res2] = await Promise.all([p1, p2])
     if (res1) {
       localStorage.setItem('permissions', JSON.stringify(res1.permissions))
@@ -62,6 +67,8 @@ export default class Login extends Vue {
       localStorage.setItem('user', JSON.stringify(res2.principal))
       localStorage.setItem('authorities', JSON.stringify(res2.authorities))
     }
+    authService.permissions = res1.permissions;
+    userService.setUserInfo(res2.principal);
     this.$router.back()
   }
 
