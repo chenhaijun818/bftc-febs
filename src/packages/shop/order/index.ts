@@ -6,6 +6,7 @@ export const page = new Page({
     listApi: 'order/systemOrderManage/findSysOrderList',
     params: {
     },
+    buttons: [],
     columns: [
         {label: '店铺名称', prop: 'shopName'},
         {label: '用户电话', prop: 'shopTell'},

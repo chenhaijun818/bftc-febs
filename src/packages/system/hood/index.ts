@@ -43,6 +43,7 @@ export const page = new Page({
                         return client.post('system/tHousingEstate/estateDel', {estateIds: [row.id]}).then(res => {
                             if (res) {
                                 ui.success('删除成功')
+                                return true
                             }
                         })
                     }

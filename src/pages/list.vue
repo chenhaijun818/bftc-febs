@@ -31,7 +31,7 @@
           align="center"
       >
         <template v-slot="{row}">
-          <el-icon class="handler" v-for="h in handlers" :size="20" :color="h.color" @click="handlerClick(h)">
+          <el-icon class="handler" v-for="h in handlers" :size="20" :color="h.color" @click="handlerClick(h, row)">
             <component :is="h.icon"></component>
           </el-icon>
         </template>
@@ -74,8 +74,9 @@ export default class List extends Vue {
   modal = null
 
   mounted() {
-    import(`@/packages${this.$route.path}`).then(m => {
-      // 因为在route enter时组件还没有实例化，拿不到this，所以在next的回调中进行赋值
+    // 使用setTimeout避免读取到上一个路由的数据
+    setTimeout(() => {
+      import(`@/packages${this.$route.path}`).then(m => {
         let route = (this.$route.path.split('/')).pop();
         this.listApi = m.page.listApi
         this.apiMethod = m.page.apiMethod
@@ -85,7 +86,10 @@ export default class List extends Vue {
         this.buttons = m.page.buttons.filter((b: Handler) => authService.checkPermission(`${route}:${b.permission}`))
         this.handlers = m.page.handlers.filter((h: Handler) => authService.checkPermission(`${route}:${h.permission}`))
         this.getList()
-    })
+      }).catch(() => {
+        console.log('page not found')
+      })
+    }, 0)
   }
 
   onPageChange(index: number) {
@@ -134,9 +138,11 @@ export default class List extends Vue {
     this.modal = button.component
   }
 
-  handlerClick(handler: Handler) {
-    handler.click().then((res: any) => {
-      console.log(res)
+  handlerClick(handler: Handler, row: any) {
+    handler.click(row).then((res: any) => {
+      if (res) {
+        this.getList()
+      }
     })
   }
 

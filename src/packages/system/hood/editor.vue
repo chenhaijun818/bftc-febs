@@ -23,7 +23,7 @@
         <el-cascader v-model="hood.location" :options="pca" @change="onCityChange"></el-cascader>
       </el-form-item>
     </el-form>
-        <div id="qqmap"></div>
+    <div id="qqmap"></div>
     <template #footer>
       <el-button type="warning" plain @click="onClose">取消</el-button>
       <el-button type="primary" plain @click="submit">确认</el-button>
@@ -35,9 +35,11 @@
 import {regionData} from "element-china-area-data"
 import {Vue} from "vue-class-component";
 import {markRaw} from "vue";
+import {Client} from "@/core/client/client";
 
 // @ts-ignore
 const TMap = window.TMap;
+const client = new Client();
 
 export default class HoodEditor extends Vue {
   name = 'hood-editor'
@@ -49,6 +51,21 @@ export default class HoodEditor extends Vue {
     address: ''
   }
   drawer = markRaw({})
+  map: any
+
+  mounted() {
+    this.$nextTick(() => {
+      this.map = new TMap.Map("qqmap", {
+        zoom: 14,
+        center: new TMap.LatLng(39.986785, 116.301012)
+      })
+      this.map.on("click", this.onChooseLocation)
+      const geocoder = new TMap.service.Geocoder()
+      geocoder.getLocation({address: '北京市'}).then((result: any) => {
+        this.map.setCenter(result.result.location)
+      })
+    })
+  }
 
   show(row = {}) {
     this.hood = row
@@ -56,7 +73,11 @@ export default class HoodEditor extends Vue {
   }
 
   submit() {
-    console.log(this.hood)
+    client.post('system/tHousingEstate/estateAdd', this.hood).then(res => {
+      if (res) {
+        this.$emit('success')
+      }
+    })
   }
 
   onClose() {
@@ -64,17 +85,30 @@ export default class HoodEditor extends Vue {
   }
 
   onCityChange() {
-    const address = this.hood.location.join("")
-    console.log(address)
-    // let map = new TMap.Map("qqmap", {
-    //   zoom: 14,
-    //   center: new TMap.LatLng(39.986785, 116.301012)
-    // })
-    //   // map.on("click", this.onMapClick)
-    // const geocoder = new TMap.service.Geocoder()
-    // geocoder.getLocation({ address }).then((result: any) => {
-    //   map.setCenter(result.result.location)
-    // })
+    let address: any = []
+    let list = this.pca
+    this.hood.location.forEach((code: any) => {
+      let target = list.find((e: any) => e.value === code)
+      if (target) {
+        address.push(target.label);
+        list = target.children
+      }
+    })
+    address = address.join('')
+    const geocoder = new TMap.service.Geocoder()
+    geocoder.getLocation({address}).then((result: any) => {
+      this.map.setCenter(result.result.location)
+    })
+  }
+
+  onChooseLocation(e: any) {
+    const location = new TMap.LatLng(e.latLng.lat, e.latLng.lng)
+    const geocoder = new TMap.service.Geocoder()
+    geocoder.getAddress({location: location}).then((res: any) => {
+      this.hood.address = res.result.address
+      this.hood.elatitude = e.latLng.lat
+      this.hood.elongitude = e.latLng.lng
+    })
   }
 }
 </script>

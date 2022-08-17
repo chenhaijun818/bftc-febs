@@ -6,6 +6,7 @@ export const page = new Page({
     listApi: 'city/system/shop/findStoreAutList',
     params: {
     },
+    buttons: [],
     columns: [
         {label: '入驻类型', prop: 'enterTypeName'},
         {label: '商家名称', prop: 'shopNickname'},
