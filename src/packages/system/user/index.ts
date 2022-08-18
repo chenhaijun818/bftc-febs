@@ -6,6 +6,7 @@ export const page = new Page({
     apiMethod: 'GET',
     buttons: [],
     handlers: [],
+    filters: [],
     columns: [
         {label: '用户名', prop: 'username'},
         {label: '性别', prop: 'sex', filter(row: any) {return ['男性', '女性', '保密'][row.sex]}},

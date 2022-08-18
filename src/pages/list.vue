@@ -2,8 +2,32 @@
   <div class="container">
     <div class="filter">
       <template v-for="f in filters">
-        <el-input size="large" class="filter-input" v-if="f.type === 'text'" :placeholder="f.placeholder"
-                  v-model="params[f.prop]"></el-input>
+        <el-input
+            v-if="f.type === 'text'"
+            :placeholder="f.placeholder"
+            size="large"
+            class="filter-input"
+            v-model="params[f.prop]"
+        >
+        </el-input>
+        <el-date-picker
+            v-if="f.type === 'date'"
+            value-format="YYYY-MM-DD"
+            :placeholder="f.placeholder"
+            size="large"
+            class="filter-input"
+            v-model="params[f.prop]"
+        >
+        </el-date-picker>
+        <el-date-picker
+            v-if="f.type === 'timestamp'"
+            value-format="x"
+            :placeholder="f.placeholder"
+            size="large"
+            class="filter-input"
+            v-model="params[f.prop]"
+        >
+        </el-date-picker>
       </template>
       <el-button v-if="filters" plain size="large" type="primary" @click="search">搜索</el-button>
       <el-button v-if="filters" plain size="large" type="success" @click="reset">重置</el-button>
@@ -82,6 +106,7 @@ export default class List extends Vue {
         this.apiMethod = m.page.apiMethod
         this.columns = m.page.columns
         this.paramList = m.page.params
+        this.params = m.page.params
         this.filters = m.page.filters
         this.buttons = m.page.buttons.filter((b: Handler) => authService.checkPermission(`${route}:${b.permission}`))
         this.handlers = m.page.handlers.filter((h: Handler) => authService.checkPermission(`${route}:${h.permission}`))
@@ -119,7 +144,7 @@ export default class List extends Vue {
     }
     client.request(this.listApi, params, this.apiMethod, {}).then(res => {
       if (res) {
-        this.list = res.records || res.rows
+        this.list = res.records || res.rows || []
         this.total = res.total
       }
     })

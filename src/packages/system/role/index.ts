@@ -6,6 +6,7 @@ export const page = new Page({
     apiMethod: 'GET',
     buttons: [],
     handlers: [],
+    filters: [],
     columns: [
         {label: '角色名称', prop: 'roleName'},
         {label: '角色描述', prop: 'remark'},

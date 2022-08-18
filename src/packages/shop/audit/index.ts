@@ -7,6 +7,8 @@ export const page = new Page({
     params: {
     },
     buttons: [],
+    filters: [],
+    handlers: [],
     columns: [
         {label: '入驻类型', prop: 'enterTypeName'},
         {label: '商家名称', prop: 'shopNickname'},

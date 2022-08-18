@@ -1,5 +1,16 @@
 // 通用列表页面的model
 
+interface PageOptions {
+    name: string
+    listApi: string
+    apiMethod: string
+    columns: any[]
+    buttons: Handler[]
+    filters: Filter[]
+    handlers: Handler[]
+    params?: any
+}
+
 export class Page {
     name = ''   // 页面名称
     listApi = ''    // 请求列表数据的api
@@ -7,10 +18,10 @@ export class Page {
     columns: Column[] = []    // 显示那些列
     params = []     // 请求列表数据的参数
     filters: Filter[] = []    // 列表筛选条件
-    buttons = []    // 页面上方的按钮
+    buttons: Handler[] = []    // 页面上方的按钮
     handlers: Handler[] = []   // 对列表数据的操作
 
-    constructor(options: any) {
+    constructor(options: PageOptions) {
         this.name = options.name
         this.listApi = options.listApi
         this.apiMethod = options.apiMethod

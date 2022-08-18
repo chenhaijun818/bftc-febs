@@ -13,10 +13,11 @@ export const page = new Page({
     params: [],
     buttons: [
         {
-            name: 'add',
+            type: 'add',
             text: '新增',
             permission: 'add',
-            component: HoodEditor, click() {
+            component: HoodEditor,
+            async click() {
                 console.log('add')
             }
         }
@@ -27,13 +28,15 @@ export const page = new Page({
     // 对列表的操作
     handlers: [
         {
+            type: 'update',
             icon: 'edit',
             permission: 'update',
             color: 'rgb(45 183 245)',
-            click(row: any) {
+            async click(row: any) {
                 console.log(row)
             },
         }, {
+            type: 'delete',
             icon: 'delete',
             permission: 'delete',
             color: 'rgb(255 85 0)',

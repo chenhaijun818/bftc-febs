@@ -1,9 +1,9 @@
 import {Page} from "@/models/page";
 
 export const page = new Page({
-    name: 'commission-audit',
-    listApi: '',
-    apiMethod: '',
+    name: 'commission-list',
+    listApi: 'order/systemOrderManage/findSysOrderList',
+    apiMethod: 'POST',
     buttons: [],
     filters: [],
     handlers: [],
